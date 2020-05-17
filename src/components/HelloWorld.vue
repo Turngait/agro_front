@@ -35,6 +35,11 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  beforeMount: () => {
+    fetch('http://localhost:5000/test')
+    .then(res => res.json())
+    .then(data => console.log(data))
   }
 }
 </script>
