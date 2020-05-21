@@ -17,7 +17,7 @@
 
 <style lang="scss" scoped>
   .header_box {
-    padding: 1vh 3vw;
+    padding: 1vh 1.5vw;
     background-color: #1ABC00;
     color: #fff;
     font-family: 'Lora', serif;
