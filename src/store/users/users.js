@@ -7,11 +7,19 @@ export default {
       name: '',
       email: '',
       pass: ''
-    }
+    },
+    signInOpen: true,
+    token: ''
   },
   getters: {
     signup(state) {
       return state.signup
+    },
+    signInOpen(state) {
+      return state.signInOpen
+    },
+    token (state) {
+      return state.token
     }
   },
   mutations: {
@@ -23,6 +31,9 @@ export default {
     },
     setSignUpPass(state, payload) {
       state.signup.pass = payload
+    },
+    changeSignInOpen (state, payload) {
+      state.signInOpen = payload
     }
   },
   actions: {
@@ -36,8 +47,30 @@ export default {
         },
         body: JSON.stringify(signup)
       })
+      .then(res => console.log(res))
+    },
+
+    async signIn(state) {
+      const {signup} = state.state
+      let result = false
+      await fetch(API_URL + '/user/signin', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(signup)
+      })      
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => {
+        if(data.status === 204) {
+          const {token} = data.data
+          state.token = token
+          localStorage.setItem('token', token)
+          result = true
+        }
+      })
+      return result
     }
   }
 }

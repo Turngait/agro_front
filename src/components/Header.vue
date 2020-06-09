@@ -1,17 +1,37 @@
 <template>
   <div class="header_box">
     <p class="logo">AgroControll</p>
-    <nav class="header_box__nav">
+    <nav v-if="typeNav === 'managment'" class="header_box__nav">
       <router-link class="header_box__nav_item" to="/managment">Managment</router-link>
       <router-link class="header_box__nav_item" to='/'>Profile</router-link>
-      <router-link to='/logout' class="header_box__nav_item">LogOut</router-link>
+      <button @click="logOut" class="header_box__nav_item">LogOut</button>
+    </nav>
+
+    <nav v-else-if="typeNav === 'signUp'" class="header_box__nav">
+      <button @click="openSignIn" class="header_box__nav_item">Sign In</button>
+      <button @click="openSignUp" class="header_box__nav_item">Sign Up</button>
     </nav>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'Header'
+    name: 'Header',
+    props: {
+      typeNav: String
+    },
+    methods: {
+      openSignIn() {
+        this.$store.commit('users/changeSignInOpen', true)
+      },
+      openSignUp() {
+        this.$store.commit('users/changeSignInOpen', false)
+      },
+      logOut () {
+        localStorage.removeItem('token')
+        this.$router.push('/')
+      }
+    }
   }
 </script>
 
@@ -36,9 +56,16 @@
         margin-right: 1vw;
         font-size: 1.4rem;
         font-weight: bold;
+        background: none;
+        border: none;
+        font-family: 'Lora', serif;
 
         &:last-child {
           margin-right: 0;
+        }
+
+        &:focus {
+          outline: none;
         }
       }
     }

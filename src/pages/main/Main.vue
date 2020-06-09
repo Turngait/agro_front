@@ -1,13 +1,19 @@
 <template>
   <div class="mainPage">
-    <Header />
+    <Header typeNav="signUp"/>
     <div class="mainPage__info">
-      <form class="mainPage__info__authBox">
+      <form v-if="signInOpen" class="mainPage__info__authBox">
+        <h3 class="mainPage__info__authBox__header">Sign In</h3>
+        <input class="inp" name="email" placeholder="Ваш e-mail..." v-model="email" @change="updateEmail">
+        <input class="inp" type="password" name="pass" placeholder="Ваш пароль..." v-model="pass" @change="updatePass">
+        <button class="btn" type="button" @click="signIn">Sign In</button>
+      </form>
+      <form v-else class="mainPage__info__authBox">
         <h3 class="mainPage__info__authBox__header">Sign Up</h3>
         <input class="inp" name="email" placeholder="Ваш e-mail..." v-model="email" @change="updateEmail">
         <input class="inp" name="name" placeholder="Ваше имя..." v-model="name" @change="updateName">
-        <input class="inp" name="pass" placeholder="Ваш пароль..." v-model="pass" @change="updatePass">
-        <button class="btn" type="button" @click="signUp">SignUp</button>
+        <input class="inp" type="password" name="pass" placeholder="Ваш пароль..." v-model="pass" @change="updatePass">
+        <button class="btn" type="button" @click="signUp">Sign Up</button>
       </form>
     </div>
     <Footer />
@@ -24,7 +30,8 @@
       return {
         name: '',
         email: '',
-        pass: ''
+        pass: '',
+        token: ''
       }
     },
     components: {
@@ -34,6 +41,9 @@
     computed: {
       signup () {
         return this.$store.getters['users/signup']
+      },
+      signInOpen () {
+        return this.$store.getters['users/signInOpen']
       }
     },
     methods: {
@@ -48,13 +58,19 @@
       },
       signUp () {
         this.$store.dispatch('users/signUp')
+      },
+      async signIn () {
+        const result = await this.$store.dispatch('users/signIn')
+        if(result) {
+          this.$router.push('managment')
+        }
       }
     },
     mounted () {
-      // console.log(this.signup)
-    },
-    updated() {
-      // console.log(this.signup)
+      this.token = localStorage.getItem('token')
+      if (this.token) {
+        this.$router.push('managment')
+      }
     }
   }
 </script>
@@ -100,6 +116,10 @@
     padding: 0.3vh 1vw;
     min-width: 90%;
     font-size: 1.4rem;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .btn {

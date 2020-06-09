@@ -1,6 +1,6 @@
 <template>
   <div class="managment">
-    <Header />
+    <Header typeNav="managment"/>
     <div class="managment_box">
       <LeftMenu />
       <div class="managment_box__content">
@@ -39,6 +39,12 @@
       History,
       Button1,
       Dict
+    },
+    mounted () {
+      this.token = localStorage.getItem('token')
+      if (!this.token) {
+        this.$router.push('/')
+      }
     }
   }
 </script>
