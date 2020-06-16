@@ -6,13 +6,18 @@
       <button class="leftMenu__boxList_item">Carrot</button>
       <button class="leftMenu__boxList_item">Onion</button>
     </nav>
-    <button class="leftMenu__boxList_item">Add culture</button>
+    <button @click="openAddCulturalMenu" class="leftMenu__boxList_item">Add culture</button>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'LeftMenu'
+    name: 'LeftMenu',
+    methods: {
+      openAddCulturalMenu () {
+        this.$store.commit('managment/changeIsAddCulturalopen', true)
+      }
+    },
   }
 </script>
 
@@ -52,6 +57,10 @@
         margin-bottom: 1.2vh;
         cursor: pointer;
         font-family: 'Nunito', sans-serif;
+
+        &:focus {
+          outline: none;
+        }
         
       }
     }

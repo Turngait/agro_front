@@ -56,8 +56,11 @@
       updatePass () {
         this.$store.commit('users/setSignUpPass', this.pass)
       },
-      signUp () {
-        this.$store.dispatch('users/signUp')
+      async signUp () {
+        const result = await this.$store.dispatch('users/signUp')
+        if(result) {
+          this.$router.push('managment')
+        }
       },
       async signIn () {
         const result = await this.$store.dispatch('users/signIn')

@@ -39,7 +39,9 @@ export default {
   actions: {
     async signUp(state) {
       const {signup} = state.state
-      fetch(API_URL + '/user/signup', {
+      let result = false
+
+      await fetch(API_URL + '/user/signup', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -47,7 +49,25 @@ export default {
         },
         body: JSON.stringify(signup)
       })
-      .then(res => console.log(res))
+      .then(res => {
+        if (res.status === 202) {
+          return res.json()
+        } else {
+          return null
+        }
+      })
+      .then(data => {
+        if (data) {
+          const {token} = data.data
+          state.token = token
+          localStorage.setItem('token', token)
+          result = true
+        } else {
+          result = false
+        }
+      })
+      
+      return result
     },
 
     async signIn(state) {

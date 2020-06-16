@@ -1,5 +1,8 @@
 <template>
   <div class="managment">
+    <template v-if="isAddCulturalopen">
+      <AddCulture />
+    </template>
     <Header typeNav="managment"/>
     <div class="managment_box">
       <LeftMenu />
@@ -28,6 +31,7 @@
   import Stat from './components/Stat'
   import History from './components/History'
   import Dict from './components/Dict'
+  import AddCulture from './components/AddCulture'
 
   export default {
     name: 'Managment',
@@ -38,7 +42,16 @@
       Stat,
       History,
       Button1,
-      Dict
+      Dict,
+      AddCulture
+    },
+    computed: {
+      isAddCulturalopen () {
+        return this.$store.getters['managment/isAddCulturalopen']
+      }
+    },
+    methods: {
+
     },
     mounted () {
       this.token = localStorage.getItem('token')
